@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.settingsTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.backButton = new System.Windows.Forms.Button();
             this.settingsLabel = new System.Windows.Forms.Label();
             this.settingTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.musicTrackBar = new System.Windows.Forms.TrackBar();
@@ -41,7 +42,6 @@
             this.key2Button = new System.Windows.Forms.Button();
             this.key1Button = new System.Windows.Forms.Button();
             this.soundTrackBar = new System.Windows.Forms.TrackBar();
-            this.backButton = new System.Windows.Forms.Button();
             this.settingsTableLayoutPanel.SuspendLayout();
             this.settingTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.musicTrackBar)).BeginInit();
@@ -66,6 +66,21 @@
             this.settingsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.settingsTableLayoutPanel.Size = new System.Drawing.Size(464, 681);
             this.settingsTableLayoutPanel.TabIndex = 5;
+            // 
+            // backButton
+            // 
+            this.backButton.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.backButton.BackColor = System.Drawing.Color.White;
+            this.backButton.FlatAppearance.BorderSize = 0;
+            this.backButton.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F);
+            this.backButton.ForeColor = System.Drawing.Color.Transparent;
+            this.backButton.Image = global::RhythmGame.Properties.Resources.back;
+            this.backButton.Location = new System.Drawing.Point(207, 627);
+            this.backButton.Name = "backButton";
+            this.backButton.Size = new System.Drawing.Size(50, 39);
+            this.backButton.TabIndex = 6;
+            this.backButton.UseVisualStyleBackColor = false;
+            this.backButton.Click += new System.EventHandler(this.backButton_Click);
             // 
             // settingsLabel
             // 
@@ -216,21 +231,6 @@
             this.soundTrackBar.Name = "soundTrackBar";
             this.soundTrackBar.Size = new System.Drawing.Size(292, 45);
             this.soundTrackBar.TabIndex = 3;
-            // 
-            // backButton
-            // 
-            this.backButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.backButton.BackColor = System.Drawing.Color.White;
-            this.backButton.FlatAppearance.BorderSize = 0;
-            this.backButton.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F);
-            this.backButton.ForeColor = System.Drawing.Color.Transparent;
-            this.backButton.Image = global::RhythmGame.Properties.Resources.back;
-            this.backButton.Location = new System.Drawing.Point(207, 627);
-            this.backButton.Name = "backButton";
-            this.backButton.Size = new System.Drawing.Size(50, 39);
-            this.backButton.TabIndex = 6;
-            this.backButton.UseVisualStyleBackColor = false;
-            this.backButton.Click += new System.EventHandler(this.backButton_Click);
             // 
             // SettingsForm
             // 

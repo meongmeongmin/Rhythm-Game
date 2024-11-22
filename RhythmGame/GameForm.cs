@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 
 namespace RhythmGame
 {
@@ -17,6 +18,9 @@ namespace RhythmGame
             InitializeComponent();
         }
 
+
+
+        #region UI
         private void homeButton_Click(object sender, EventArgs e)
         {
             Hide();
@@ -33,5 +37,6 @@ namespace RhythmGame
             settingsForm.ShowDialog();
             Show();
         }
+        #endregion
     }
 }

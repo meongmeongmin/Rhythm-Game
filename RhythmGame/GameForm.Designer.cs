@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
             this.scoreLabel = new System.Windows.Forms.Label();
             this.bottomTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.key4Button = new System.Windows.Forms.Button();
@@ -172,7 +173,7 @@
             // linePictureBox
             // 
             this.linePictureBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.linePictureBox.Image = global::RhythmGame.Properties.Resources.Line;
+            this.linePictureBox.Image = ((System.Drawing.Image)(resources.GetObject("linePictureBox.Image")));
             this.linePictureBox.Location = new System.Drawing.Point(0, 45);
             this.linePictureBox.Name = "linePictureBox";
             this.linePictureBox.Size = new System.Drawing.Size(464, 5);
@@ -187,7 +188,7 @@
             this.settingsButton.FlatAppearance.BorderSize = 0;
             this.settingsButton.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F);
             this.settingsButton.ForeColor = System.Drawing.Color.Transparent;
-            this.settingsButton.Image = global::RhythmGame.Properties.Resources.settings;
+            this.settingsButton.Image = ((System.Drawing.Image)(resources.GetObject("settingsButton.Image")));
             this.settingsButton.Location = new System.Drawing.Point(21, 3);
             this.settingsButton.Name = "settingsButton";
             this.settingsButton.Size = new System.Drawing.Size(50, 39);
@@ -202,7 +203,7 @@
             this.homeButton.FlatAppearance.BorderSize = 0;
             this.homeButton.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F);
             this.homeButton.ForeColor = System.Drawing.Color.Transparent;
-            this.homeButton.Image = global::RhythmGame.Properties.Resources.home;
+            this.homeButton.Image = ((System.Drawing.Image)(resources.GetObject("homeButton.Image")));
             this.homeButton.Location = new System.Drawing.Point(392, 3);
             this.homeButton.Name = "homeButton";
             this.homeButton.Size = new System.Drawing.Size(50, 39);
@@ -213,7 +214,7 @@
             // key4
             // 
             this.key4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.key4.Image = global::RhythmGame.Properties.Resources.Key;
+            this.key4.Image = ((System.Drawing.Image)(resources.GetObject("key4.Image")));
             this.key4.Location = new System.Drawing.Point(351, 3);
             this.key4.Name = "key4";
             this.key4.Size = new System.Drawing.Size(110, 33);
@@ -224,7 +225,7 @@
             // key3
             // 
             this.key3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.key3.Image = global::RhythmGame.Properties.Resources.Key;
+            this.key3.Image = ((System.Drawing.Image)(resources.GetObject("key3.Image")));
             this.key3.Location = new System.Drawing.Point(235, 3);
             this.key3.Name = "key3";
             this.key3.Size = new System.Drawing.Size(110, 33);
@@ -235,7 +236,7 @@
             // key2
             // 
             this.key2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.key2.Image = global::RhythmGame.Properties.Resources.Key;
+            this.key2.Image = ((System.Drawing.Image)(resources.GetObject("key2.Image")));
             this.key2.Location = new System.Drawing.Point(119, 3);
             this.key2.Name = "key2";
             this.key2.Size = new System.Drawing.Size(110, 33);
@@ -246,7 +247,7 @@
             // key1
             // 
             this.key1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.key1.Image = global::RhythmGame.Properties.Resources.Key;
+            this.key1.Image = ((System.Drawing.Image)(resources.GetObject("key1.Image")));
             this.key1.Location = new System.Drawing.Point(3, 3);
             this.key1.Name = "key1";
             this.key1.Size = new System.Drawing.Size(110, 33);
