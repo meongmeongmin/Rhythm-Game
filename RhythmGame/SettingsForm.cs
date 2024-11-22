@@ -16,5 +16,11 @@ namespace RhythmGame
         {
             InitializeComponent();
         }
+
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            Owner.Show();
+            Close();
+        }
     }
 }

@@ -60,6 +60,7 @@
             this.startGameButton.TabIndex = 0;
             this.startGameButton.Text = "START GAME";
             this.startGameButton.UseVisualStyleBackColor = true;
+            this.startGameButton.Click += new System.EventHandler(this.startGameButton_Click);
             // 
             // mainTableLayoutPanel
             // 
@@ -105,6 +106,7 @@
             this.settingsButton.TabIndex = 3;
             this.settingsButton.Text = "SETTINGS";
             this.settingsButton.UseVisualStyleBackColor = true;
+            this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
             // 
             // MainForm
             // 

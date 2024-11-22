@@ -41,6 +41,7 @@
             this.key2Button = new System.Windows.Forms.Button();
             this.key1Button = new System.Windows.Forms.Button();
             this.soundTrackBar = new System.Windows.Forms.TrackBar();
+            this.backButton = new System.Windows.Forms.Button();
             this.settingsTableLayoutPanel.SuspendLayout();
             this.settingTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.musicTrackBar)).BeginInit();
@@ -53,6 +54,7 @@
             this.settingsTableLayoutPanel.BackColor = System.Drawing.Color.Transparent;
             this.settingsTableLayoutPanel.ColumnCount = 1;
             this.settingsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.settingsTableLayoutPanel.Controls.Add(this.backButton, 0, 2);
             this.settingsTableLayoutPanel.Controls.Add(this.settingsLabel, 0, 0);
             this.settingsTableLayoutPanel.Controls.Add(this.settingTableLayoutPanel, 0, 1);
             this.settingsTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -102,9 +104,9 @@
             // musicTrackBar
             // 
             this.musicTrackBar.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.musicTrackBar.Location = new System.Drawing.Point(140, 111);
+            this.musicTrackBar.Location = new System.Drawing.Point(149, 111);
             this.musicTrackBar.Name = "musicTrackBar";
-            this.musicTrackBar.Size = new System.Drawing.Size(314, 45);
+            this.musicTrackBar.Size = new System.Drawing.Size(295, 45);
             this.musicTrackBar.TabIndex = 4;
             // 
             // soundLabel
@@ -210,10 +212,25 @@
             // soundTrackBar
             // 
             this.soundTrackBar.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.soundTrackBar.Location = new System.Drawing.Point(140, 22);
+            this.soundTrackBar.Location = new System.Drawing.Point(151, 22);
             this.soundTrackBar.Name = "soundTrackBar";
-            this.soundTrackBar.Size = new System.Drawing.Size(314, 45);
+            this.soundTrackBar.Size = new System.Drawing.Size(292, 45);
             this.soundTrackBar.TabIndex = 3;
+            // 
+            // backButton
+            // 
+            this.backButton.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.backButton.BackColor = System.Drawing.Color.White;
+            this.backButton.FlatAppearance.BorderSize = 0;
+            this.backButton.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F);
+            this.backButton.ForeColor = System.Drawing.Color.Transparent;
+            this.backButton.Image = global::RhythmGame.Properties.Resources.back;
+            this.backButton.Location = new System.Drawing.Point(207, 627);
+            this.backButton.Name = "backButton";
+            this.backButton.Size = new System.Drawing.Size(50, 39);
+            this.backButton.TabIndex = 6;
+            this.backButton.UseVisualStyleBackColor = false;
+            this.backButton.Click += new System.EventHandler(this.backButton_Click);
             // 
             // SettingsForm
             // 
@@ -249,11 +266,12 @@
         private System.Windows.Forms.Label musicLabel;
         private System.Windows.Forms.Label keyboardLabel;
         private System.Windows.Forms.TrackBar soundTrackBar;
-        private System.Windows.Forms.TrackBar musicTrackBar;
         private System.Windows.Forms.TableLayoutPanel keyButtonTableLayoutPanel;
         private System.Windows.Forms.Button key1Button;
         private System.Windows.Forms.Button key4Button;
         private System.Windows.Forms.Button key3Button;
         private System.Windows.Forms.Button key2Button;
+        private System.Windows.Forms.TrackBar musicTrackBar;
+        private System.Windows.Forms.Button backButton;
     }
 }

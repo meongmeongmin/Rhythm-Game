@@ -16,5 +16,22 @@ namespace RhythmGame
         {
             InitializeComponent();
         }
+
+        private void startGameButton_Click(object sender, EventArgs e)
+        {
+            Hide();
+            GameForm gameForm = new GameForm();
+            gameForm.ShowDialog();
+            Close();
+        }
+
+        private void settingsButton_Click(object sender, EventArgs e)
+        {
+            Hide();
+            SettingsForm settingsForm = new SettingsForm();
+            settingsForm.Owner = this;
+            settingsForm.ShowDialog();
+            Show();
+        }
     }
 }
