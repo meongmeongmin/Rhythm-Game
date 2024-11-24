@@ -24,6 +24,11 @@ namespace RhythmGame
         public GameForm()
         {
             InitializeComponent();
+
+            // 깜빡임 방지
+            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+            UpdateStyles();
+
             PlayMusic(_musicName);
         }
 

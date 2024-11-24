@@ -20,10 +20,9 @@ namespace RhythmGame
         private void startGameButton_Click(object sender, EventArgs e)
         {
             Hide();
-            Close();
-            
             GameForm gameForm = new GameForm();
             gameForm.ShowDialog();
+            Close();
         }
 
         private void settingsButton_Click(object sender, EventArgs e)
