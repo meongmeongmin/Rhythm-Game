@@ -23,15 +23,18 @@ namespace RhythmGame
         string _musicName = "60's Cardin_Glen Check_Haute Couture";
 
         Timer _timer = new Timer();
+        DateTime _startTime = DateTime.Now;
+        DateTime _pauseTime;
 
-        List<Note> _notes;
         int _score = 0;
 
+        List<Note> _notes;
         #region 노트
         int _noteSpeed = 5;
-
         int _noteWidth = 100;
         int _noteHeight = 25;
+
+        Note _firstNote = null;
         #endregion
 
         #region 판정
@@ -64,8 +67,7 @@ namespace RhythmGame
             _judgmentBottom = judgmentBottomPictureBox.Location.Y;
             _judgmentCenter = (_judgmentTop + _judgmentBottom) / 2;
 
-            InitializeTimer();
-            StartGame();
+            Init();
         }
 
         protected override CreateParams CreateParams    // 깜빡임 방지
@@ -78,22 +80,13 @@ namespace RhythmGame
             }
         }
 
-        void InitializeTimer()
+        void Init()
         {
-            _timer.Interval = 16;    // 약 60FPS
-            _timer.Tick += UpdateNotes;  // 16ms마다 호출
-        }
+            InitializeTimer();
 
-        void StartGame()
-        {
-            _timer.Start();
-            PlayMusic(_musicName);
-            UpdateScore();
-        }
-
-        void PlayMusic(string musicName)
-        {
-            string musicPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds", $"{musicName}.flac");  // flac 파일은 리소스 탐색기에서 가져올 수 없으므로 상대 경로를 통해 가져온다
+            #region 음악 불러오기
+            // flac 파일은 리소스 탐색기에서 가져올 수 없으므로 상대 경로를 통해 가져온다
+            string musicPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds", $"{_musicName}.flac");  
 
             if (File.Exists(musicPath) == false)
             {
@@ -107,12 +100,25 @@ namespace RhythmGame
                 _waveOut = new WaveOutEvent();
                 _waveOut.Init(_audioFile);
             }
+            #endregion
 
+            _notes = GenerateNotes();
+            UpdateScore();
+            _timer.Start();
+        }
+
+        void InitializeTimer()
+        {
+            _timer.Interval = 16;    // 약 60FPS
+            _timer.Tick += UpdateNotes;  // 16ms마다 호출
+        }
+
+        void PlayMusic()
+        {
             if (isPaused)   // 저장된 위치에서 재생
                 _audioFile.Position = _currentPosition;
 
             isPaused = false;
-            _notes = GenerateNotes();
             _waveOut.Play();
         }
 
@@ -138,13 +144,16 @@ namespace RhythmGame
 
         void UpdateNotes(object sender, EventArgs e)
         {
-            float currentTime = (float)_audioFile.CurrentTime.TotalSeconds;
+            if (isPaused)
+                return;
+
+            float currentTime = (float)(DateTime.Now - _startTime).TotalSeconds;
             List<Note> notes = new List<Note>();
 
             // 노트를 생성하여 화면에 표시
             foreach (Note note in _notes.ToList())
             {
-                if (note.Time <= currentTime + 1.0f && note.Time > currentTime) // 노트 생성 시간 확인
+                if (note.Time <= currentTime + 0.5f && note.Time > currentTime) // 노트 생성 시간 확인
                 {
                     Panel notePanel = new Panel
                     {
@@ -157,12 +166,15 @@ namespace RhythmGame
                         Top = 40    // 생성 위치
                     };
 
+                    if (_firstNote == null)
+                        _firstNote = note;
+
                     Controls.Add(notePanel);
                     notes.Add(note);
                 }
-            }
+             }
 
-            // 리스트에서 생성된 노트 제거
+            // 생성한 노트 제거
             foreach (var note in notes)
                 _notes.Remove(note);
 
@@ -173,6 +185,10 @@ namespace RhythmGame
                 if (note == null)
                     continue;
 
+                // 첫 노트가 판정 구간에 도달하면 음악 시작
+                if (_firstNote == note && (control.Top + control.Height) >= _judgmentTop && control.Top <= _judgmentBottom)
+                    PlayMusic();
+                
                 control.Top += _noteSpeed;   // 노트를 아래로 이동
 
                 // 화면 밖으로 벗어난 노트를 제거
@@ -183,14 +199,6 @@ namespace RhythmGame
                     ShowJudgmentEffect("Miss", Color.Red, GetLaneXPosition(note.Lane));
                 }
             }
-        }
-
-        Image GetNoteBackgroundImage(ELane lane)
-        {
-            if (lane == ELane.Lane1 || lane == ELane.Lane3)
-                return Properties.Resources.Note00;
-            else
-                return Properties.Resources.Note01;
         }
 
         int GetLaneXPosition(ELane lane)
@@ -218,11 +226,10 @@ namespace RhythmGame
                 if (note == null)
                     continue;
 
-                int noteTop = control.Top;
                 int noteBottom = control.Top + control.Height;
-                int noteCenter = noteTop + (control.Height / 2);
+                int noteCenter = control.Top + (control.Height / 2);
 
-                if (noteBottom >= _judgmentTop && noteTop <= _judgmentBottom)   // 판정 영역 확인
+                if (noteBottom >= _judgmentTop && control.Top <= _judgmentBottom)   // 판정 영역 확인
                 {
                     if (IsKeyPressed(e.KeyCode, note.Lane))
                     {
@@ -279,10 +286,11 @@ namespace RhythmGame
 
         void PauseGame()
         {
+            isPaused = true;
+            _pauseTime = DateTime.Now;
             _timer.Stop();
             _waveOut.Stop();
             _currentPosition = _audioFile.Position; // 현재 재생 위치 저장
-            isPaused = true;
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)   // 현재 이 폼이 닫힐 때(Close) 자동 호출
@@ -299,6 +307,14 @@ namespace RhythmGame
         void UpdateScore()
         {
             scoreLabel.Text = $"{_score}";
+        }
+
+        Image GetNoteBackgroundImage(ELane lane)
+        {
+            if (lane == ELane.Lane1 || lane == ELane.Lane3)
+                return Properties.Resources.Note00;
+            else
+                return Properties.Resources.Note01;
         }
 
         void ShowJudgmentEffect(string judgment, Color color, int x)
@@ -346,7 +362,9 @@ namespace RhythmGame
             settingsForm.ShowDialog();
             Show();
 
-            StartGame();
+            _timer.Start();
+            _startTime += DateTime.Now - _pauseTime;
+            PlayMusic();
         }
         #endregion
     }
