@@ -202,6 +202,7 @@
             this.musicTrackBar.Name = "musicTrackBar";
             this.musicTrackBar.Size = new System.Drawing.Size(295, 45);
             this.musicTrackBar.TabIndex = 7;
+            this.musicTrackBar.Value = 5;
             // 
             // musicLabel
             // 

@@ -23,19 +23,27 @@ namespace RhythmGame
 
         void Init()
         {
-            _selectedLaneKey = 0;
+            // 음악 볼륨 셋팅
+            musicTrackBar.Value = Program.MusicVolume;
 
+            // 키 셋팅
+            _selectedLaneKey = 0;
             lane1KeyButton.Text = Program.Rane1Key.ToString();
             lane2KeyButton.Text = Program.Rane2Key.ToString();
             lane3KeyButton.Text = Program.Rane3Key.ToString();
             lane4KeyButton.Text = Program.Rane4Key.ToString();
         }
 
-        void backButton_Click(object sender, EventArgs e)
+        void backButton_Click(object sender, EventArgs e)   // 뒤로 가기
         {
-            if (Owner is GameForm gameForm)
-                gameForm.UpdateLaneKeys();  // 키 설정 반영
+            Program.MusicVolume = musicTrackBar.Value;
             
+            if (Owner is GameForm gameForm)
+            {
+                gameForm.WaveOut.Volume = musicTrackBar.Value / 10f;    // 음악 볼륨 설정 반영
+                gameForm.UpdateLaneKeys();  // 키 설정 반영
+            }
+
             Owner.Show();
             Close();
         }
@@ -97,7 +105,7 @@ namespace RhythmGame
 
         void SettingsForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape)
+            if (e.KeyCode == Keys.Escape)   // 뒤로 가기
             {
                 backButton_Click(sender, e);
                 return;
@@ -130,7 +138,7 @@ namespace RhythmGame
             UpdateButtonStyles();
         }
 
-        bool CheckKeyDuplicate(Keys key)
+        bool CheckKeyDuplicate(Keys key)    // 키 셋팅 중복 검사
         {
             return key == Program.Rane1Key || key == Program.Rane2Key || key == Program.Rane3Key || key == Program.Rane4Key;
         }

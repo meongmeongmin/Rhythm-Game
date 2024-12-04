@@ -15,21 +15,24 @@ namespace RhythmGame
 {
     public partial class GameForm : Form
     {
-        IWavePlayer _waveOut;
+        #region 음악
+        public IWavePlayer WaveOut;
         AudioFileReader _audioFile;
         long _currentPosition;  // 현재 재생 위치 저장
         bool isPaused = false;  // 음악 일시 정지 여부
-
         string _musicName = "60's Cardin_Glen Check_Haute Couture";
-
-        Timer _timer = new Timer();
-        DateTime _startTime = DateTime.Now;
-        DateTime _pauseTime;
+        #endregion
 
         int _score = 0;
 
-        List<Note> _notes;
+        #region 시간
+        Timer _timer = new Timer();
+        DateTime _startTime = DateTime.Now; // 게임을 시작한 시간
+        DateTime _pauseTime;    // 일시 정지한 시간
+        #endregion
+
         #region 노트
+        List<Note> _notes;
         int _noteSpeed = 5;
         int _noteWidth = 100;
         int _noteHeight = 25;
@@ -96,12 +99,14 @@ namespace RhythmGame
                 return;
             }
 
-            if (_audioFile == null || _waveOut == null)
+            if (_audioFile == null || WaveOut == null)
             {
                 _audioFile = new AudioFileReader(musicPath);
-                _waveOut = new WaveOutEvent();
-                _waveOut.Init(_audioFile);
+                WaveOut = new WaveOutEvent();
+                WaveOut.Init(_audioFile);
             }
+
+            WaveOut.Volume = Program.MusicVolume / 10f;
             #endregion
 
             _notes = GenerateNotes();
@@ -121,7 +126,7 @@ namespace RhythmGame
                 _audioFile.Position = _currentPosition;
 
             isPaused = false;
-            _waveOut.Play();
+            WaveOut.Play();
         }
 
         List<Note> GenerateNotes()
@@ -150,7 +155,7 @@ namespace RhythmGame
                 return;
 
             float currentTime = (float)(DateTime.Now - _startTime).TotalSeconds;
-            List<Note> notes = new List<Note>();
+            List<Note> notes = new List<Note>();    // 화면에 표시한 노트
 
             // 노트를 생성하여 화면에 표시
             foreach (Note note in _notes.ToList())
@@ -168,7 +173,7 @@ namespace RhythmGame
                         Top = 40    // 생성 위치
                     };
 
-                    if (_firstNote == null)
+                    if (_firstNote == null) // 처음 생성한 노트 저장
                         _firstNote = note;
 
                     Controls.Add(notePanel);
@@ -176,7 +181,7 @@ namespace RhythmGame
                 }
              }
 
-            // 생성한 노트 제거
+            // 생성한 노트의 정보 제거
             foreach (var note in notes)
                 _notes.Remove(note);
 
@@ -203,25 +208,9 @@ namespace RhythmGame
             }
         }
 
-        int GetLaneXPosition(ELane lane)
-        {
-            switch (lane)
-            {
-                case ELane.Lane1:
-                    return 3;
-                case ELane.Lane2:
-                    return 119;
-                case ELane.Lane3:
-                    return 235;
-                case ELane.Lane4:
-                    return 351;
-                default:
-                    return 0;
-            }
-        }
-
         void GameForm_KeyDown(object sender, KeyEventArgs e)
         {
+            // 설정창이 열린다
             if (e.KeyCode == Keys.Escape)
             {
                 settingsButton_Click(sender, e);
@@ -237,28 +226,22 @@ namespace RhythmGame
                 int noteBottom = control.Top + control.Height;
                 int noteCenter = control.Top + (control.Height / 2);
 
-                if (noteBottom >= _judgmentTop && control.Top <= _judgmentBottom)   // 판정 영역 확인
+                if (noteBottom >= _judgmentTop && control.Top <= _judgmentBottom)   // 노트 판정 영역 확인
                 {
                     if (IsKeyPressed(e.KeyCode, note.Lane))
                     {
                         int distance = Math.Abs(noteCenter - _judgmentCenter);  // 판정 거리 계산
                         string judgment = GetJudgment(distance);
-                        HandleJudgment(judgment, note.Lane);
+                        HandleJudgment(judgment, note.Lane);    // 판정 및 점수 계산
 
                         // 노트 제거
                         Controls.Remove(control);
                         control.Dispose();
                         _notes.Remove(note);
-                        
                         break;
                     }
                 }
             }
-        }
-
-        bool IsKeyPressed(Keys keyPressed, ELane lane)
-        {
-            return keyPressed == _laneKeys[lane]();
         }
 
         string GetJudgment(int distance)
@@ -297,7 +280,7 @@ namespace RhythmGame
             isPaused = true;
             _pauseTime = DateTime.Now;
             _timer.Stop();
-            _waveOut.Stop();
+            WaveOut.Stop();
             _currentPosition = _audioFile.Position; // 현재 재생 위치 저장
         }
 
@@ -305,14 +288,38 @@ namespace RhythmGame
         {
             _timer?.Stop(); 
             _timer?.Dispose();
-            _waveOut?.Stop();
-            _waveOut?.Dispose();
+            WaveOut?.Stop();
+            WaveOut?.Dispose();
             _audioFile?.Dispose();
             base.OnFormClosing(e);
         }
 
+        #region Helper
+        int GetLaneXPosition(ELane lane)
+        {
+            switch (lane)
+            {
+                case ELane.Lane1:
+                    return 3;
+                case ELane.Lane2:
+                    return 119;
+                case ELane.Lane3:
+                    return 235;
+                case ELane.Lane4:
+                    return 351;
+                default:
+                    return 0;
+            }
+        }
+
+        bool IsKeyPressed(Keys keyPressed, ELane lane)
+        {
+            return keyPressed == _laneKeys[lane]();
+        }
+        #endregion
+
         #region UI
-        public void UpdateLaneKeys()
+        public void UpdateLaneKeys()    // 키 셋팅 업데이트
         {
             lane1KeyButton.Text = Program.Rane1Key.ToString();
             lane2KeyButton.Text = Program.Rane2Key.ToString();
@@ -335,6 +342,7 @@ namespace RhythmGame
 
         void ShowJudgmentEffect(string judgment, Color color, int x)
         {
+            // 판정 이펙트
             Label effectLabel = new Label
             {
                 Text = judgment,
@@ -358,7 +366,7 @@ namespace RhythmGame
             effectTimer.Start();
         }
 
-        void homeButton_Click(object sender, EventArgs e)
+        void homeButton_Click(object sender, EventArgs e)   // 홈 화면이 열리고 게임 화면은 닫는다
         {
             PauseGame();
 
@@ -368,7 +376,7 @@ namespace RhythmGame
             Close();
         }
 
-        void settingsButton_Click(object sender, EventArgs e)
+        void settingsButton_Click(object sender, EventArgs e)   // 설정창이 열리고 게임 화면은 가린다
         {
             PauseGame();
 
@@ -376,8 +384,9 @@ namespace RhythmGame
             SettingsForm settingsForm = new SettingsForm();
             settingsForm.Owner = this;
             settingsForm.ShowDialog();
+
+            // 게임 화면으로 복귀
             Show();
-            
             _timer.Start();
             _startTime += DateTime.Now - _pauseTime;
             PlayMusic();
