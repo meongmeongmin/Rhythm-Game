@@ -46,12 +46,12 @@ namespace RhythmGame
         const int _judgmentGoodThreshold = 20;
         #endregion
 
-        Dictionary<ELane, Keys> _laneKeys = new Dictionary<ELane, Keys>
+        Dictionary<ELane, Func<Keys>> _laneKeys = new Dictionary<ELane, Func<Keys>>
         {
-            { ELane.Lane1, Program.Rane1Key },
-            { ELane.Lane2, Program.Rane2Key },
-            { ELane.Lane3, Program.Rane3Key },
-            { ELane.Lane4, Program.Rane4Key }
+            { ELane.Lane1, () => Program.Rane1Key },
+            { ELane.Lane2, () => Program.Rane2Key },
+            { ELane.Lane3, () => Program.Rane3Key },
+            { ELane.Lane4, () => Program.Rane4Key }
         };
 
         public GameForm()
@@ -61,6 +61,8 @@ namespace RhythmGame
             // 깜빡임 방지
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
             UpdateStyles();
+
+            UpdateLaneKeys();
 
             // 판정 픽처 박스들이 dock라서 Top과 Bottom 대신에 Location Y로 했다
             _judgmentTop = judgmentTopPictureBox.Location.Y;    
@@ -220,6 +222,12 @@ namespace RhythmGame
 
         void GameForm_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Escape)
+            {
+                settingsButton_Click(sender, e);
+                return;
+            }
+
             foreach (Control control in Controls.OfType<Panel>().ToList())
             {
                 Note note = control.Tag as Note;
@@ -250,7 +258,7 @@ namespace RhythmGame
 
         bool IsKeyPressed(Keys keyPressed, ELane lane)
         {
-            return _laneKeys.TryGetValue(lane, out Keys key) && keyPressed == key;
+            return keyPressed == _laneKeys[lane]();
         }
 
         string GetJudgment(int distance)
@@ -304,6 +312,14 @@ namespace RhythmGame
         }
 
         #region UI
+        public void UpdateLaneKeys()
+        {
+            lane1KeyButton.Text = Program.Rane1Key.ToString();
+            lane2KeyButton.Text = Program.Rane2Key.ToString();
+            lane3KeyButton.Text = Program.Rane3Key.ToString();
+            lane4KeyButton.Text = Program.Rane4Key.ToString();
+        }
+
         void UpdateScore()
         {
             scoreLabel.Text = $"{_score}";
@@ -361,7 +377,7 @@ namespace RhythmGame
             settingsForm.Owner = this;
             settingsForm.ShowDialog();
             Show();
-
+            
             _timer.Start();
             _startTime += DateTime.Now - _pauseTime;
             PlayMusic();
