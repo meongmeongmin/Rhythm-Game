@@ -206,6 +206,7 @@
             this.ShowIcon = false;
             this.Text = "Rhythm Game";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyUp);
             this.topPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.linePictureBox)).EndInit();
             this.bottomPanel.ResumeLayout(false);

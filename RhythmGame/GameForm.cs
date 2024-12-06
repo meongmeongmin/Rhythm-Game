@@ -217,6 +217,8 @@ namespace RhythmGame
                 return;
             }
 
+            UpdateButtonStyles(e);
+
             foreach (Control control in Controls.OfType<Panel>().ToList())
             {
                 Note note = control.Tag as Note;
@@ -242,6 +244,15 @@ namespace RhythmGame
                     }
                 }
             }
+        }
+
+        void GameForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            // 모든 버튼 초기화
+            lane1KeyButton.BackColor = DefaultBackColor;
+            lane2KeyButton.BackColor = DefaultBackColor;
+            lane3KeyButton.BackColor = DefaultBackColor;
+            lane4KeyButton.BackColor = DefaultBackColor;
         }
 
         string GetJudgment(int distance)
@@ -330,6 +341,25 @@ namespace RhythmGame
         void UpdateScore()
         {
             scoreLabel.Text = $"{_score}";
+        }
+
+        void UpdateButtonStyles(KeyEventArgs e)
+        {
+            // 모든 버튼 초기화
+            lane1KeyButton.BackColor = DefaultBackColor;
+            lane2KeyButton.BackColor = DefaultBackColor;
+            lane3KeyButton.BackColor = DefaultBackColor;
+            lane4KeyButton.BackColor = DefaultBackColor;
+
+            // 입력한 키 강조
+            if (e.KeyCode == Program.Rane1Key)
+                lane1KeyButton.BackColor = Color.LightBlue;
+            else if (e.KeyCode == Program.Rane2Key)
+                lane2KeyButton.BackColor = Color.LightBlue;
+            else if (e.KeyCode == Program.Rane3Key)
+                lane3KeyButton.BackColor = Color.LightBlue;
+            else if (e.KeyCode == Program.Rane4Key)
+                lane4KeyButton.BackColor = Color.LightBlue;
         }
 
         Image GetNoteBackgroundImage(ELane lane)

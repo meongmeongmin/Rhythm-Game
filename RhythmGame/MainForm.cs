@@ -17,7 +17,7 @@ namespace RhythmGame
             InitializeComponent();
         }
 
-        private void startGameButton_Click(object sender, EventArgs e)
+        void startGameButton_Click(object sender, EventArgs e)
         {
             Hide();
             GameForm gameForm = new GameForm();
@@ -25,7 +25,7 @@ namespace RhythmGame
             Close();
         }
 
-        private void settingsButton_Click(object sender, EventArgs e)
+        void settingsButton_Click(object sender, EventArgs e)
         {
             Hide();
             SettingsForm settingsForm = new SettingsForm();
