@@ -205,7 +205,7 @@ namespace RhythmGame
                     control.Dispose();
                     ShowJudgmentEffect("Miss", Color.Red, GetLaneXPosition(note.Lane));
                 }
-            }
+            }  
         }
 
         void GameForm_KeyDown(object sender, KeyEventArgs e)
